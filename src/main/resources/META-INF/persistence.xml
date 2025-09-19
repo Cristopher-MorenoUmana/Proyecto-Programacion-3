@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence           http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+  <persistence-unit name="una.cr_Proyecto_Progra_lII_jar_1.0PU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>models.entity.MedicineSurgery</class>
+    <class>models.entity.ReportMedicine</class>
+    <class>models.entity.ReportSurgery</class>
+    <class>models.entity.Medicine</class>
+    <class>models.entity.Consultation</class>
+    <class>models.entity.MedicineAppointment</class>
+    <class>models.entity.ReportAppointment</class>
+    <class>models.entity.Surgery</class>
+    <class>models.entity.ReportMedicalCertificate</class>
+    <class>models.entity.User</class>
+    <class>models.entity.Client</class>
+    <class>models.entity.Appointment</class>
+    <class>models.entity.Doctor</class>
+    <class>models.entity.Report</class>
+    <class>models.entity.MedicalCertificate</class>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:FREE"/>
+      <property name="javax.persistence.jdbc.user" value="C##CMORENO"/>
+      <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+      <property name="javax.persistence.jdbc.password" value="604870634"/>
+    </properties>
+  </persistence-unit>
+</persistence>
