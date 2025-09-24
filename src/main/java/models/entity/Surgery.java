@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -19,11 +14,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import models.dto.SurgeryDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_SURGERY")
 @NamedQueries({
@@ -33,11 +25,11 @@ import javax.persistence.Table;
 public class Surgery implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     @Id
     @Basic(optional = false)
     @Column(name = "SU_ID")
-    private BigDecimal suId;
+    private Integer suId;
     @Basic(optional = false)
     @Column(name = "SU_NAME")
     private String suName;
@@ -52,20 +44,26 @@ public class Surgery implements Serializable {
     public Surgery() {
     }
 
-    public Surgery(BigDecimal suId) {
+    public Surgery(Integer suId) {
         this.suId = suId;
     }
 
-    public Surgery(BigDecimal suId, String suName) {
+    public Surgery(Integer suId, String suName) {
         this.suId = suId;
         this.suName = suName;
     }
 
-    public BigDecimal getSuId() {
+    public Surgery(SurgeryDto pSurgeryDto) {
+        
+        this.suName = pSurgeryDto.getName().get();
+        this.suId = pSurgeryDto.getID();
+        this.suAppointmentId = pSurgeryDto.getAppointment().get();
+    }
+    public Integer getSuId() {
         return suId;
     }
 
-    public void setSuId(BigDecimal suId) {
+    public void setSuId(Integer suId) {
         this.suId = suId;
     }
 
@@ -110,15 +108,12 @@ public class Surgery implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+
         if (!(object instanceof Surgery)) {
             return false;
         }
         Surgery other = (Surgery) object;
-        if ((this.suId == null && other.suId != null) || (this.suId != null && !this.suId.equals(other.suId))) {
-            return false;
-        }
-        return true;
+        return !((this.suId == null && other.suId != null) || (this.suId != null && !this.suId.equals(other.suId)));
     }
 
     @Override

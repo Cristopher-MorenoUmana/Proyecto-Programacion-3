@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,11 +12,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import models.dto.DoctorDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_DOCTOR")
 @NamedQueries({
@@ -33,11 +25,11 @@ import javax.persistence.Table;
 public class Doctor implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     @Id
     @Basic(optional = false)
     @Column(name = "DC_ID")
-    private BigDecimal dcId;
+    private Integer dcId;
     @Basic(optional = false)
     @Column(name = "DC_NAME")
     private String dcName;
@@ -55,22 +47,30 @@ public class Doctor implements Serializable {
     public Doctor() {
     }
 
-    public Doctor(BigDecimal dcId) {
+    public Doctor(Integer dcId) {
         this.dcId = dcId;
     }
 
-    public Doctor(BigDecimal dcId, String dcName, String dcDegree, String dcDoctorId) {
+    public Doctor(Integer dcId, String dcName, String dcDegree, String dcDoctorId) {
         this.dcId = dcId;
         this.dcName = dcName;
         this.dcDegree = dcDegree;
         this.dcDoctorId = dcDoctorId;
     }
 
-    public BigDecimal getDcId() {
+    public Doctor(DoctorDto pDoctorDto) {
+        
+        this.dcId = pDoctorDto.getID();
+        this.dcName = pDoctorDto.getName().get();
+        this.dcDoctorId = pDoctorDto.getDoctorID().get();
+        this.dcDegree = pDoctorDto.getDegree().get();
+    }
+    
+    public Integer getDcId() {
         return dcId;
     }
 
-    public void setDcId(BigDecimal dcId) {
+    public void setDcId(Integer dcId) {
         this.dcId = dcId;
     }
 
@@ -123,15 +123,12 @@ public class Doctor implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof Doctor)) {
             return false;
         }
         Doctor other = (Doctor) object;
-        if ((this.dcId == null && other.dcId != null) || (this.dcId != null && !this.dcId.equals(other.dcId))) {
-            return false;
-        }
-        return true;
+        return !((this.dcId == null && other.dcId != null) || (this.dcId != null && !this.dcId.equals(other.dcId)));
     }
 
     @Override

@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -19,11 +14,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import models.dto.MedicalCertificateDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_MEDICAL_CERTIFICATE")
 @NamedQueries({
@@ -33,11 +25,11 @@ import javax.persistence.Table;
 public class MedicalCertificate implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     @Id
     @Basic(optional = false)
     @Column(name = "MC_ID")
-    private BigDecimal mcId;
+    private Integer mcId;
     @Basic(optional = false)
     @Column(name = "MC_DESCRIPTION")
     private String mcDescription;
@@ -53,20 +45,28 @@ public class MedicalCertificate implements Serializable {
     public MedicalCertificate() {
     }
 
-    public MedicalCertificate(BigDecimal mcId) {
+    public MedicalCertificate(Integer mcId) {
         this.mcId = mcId;
     }
 
-    public MedicalCertificate(BigDecimal mcId, String mcDescription) {
+    public MedicalCertificate(Integer mcId, String mcDescription) {
         this.mcId = mcId;
         this.mcDescription = mcDescription;
     }
 
-    public BigDecimal getMcId() {
+    public MedicalCertificate(MedicalCertificateDto pMedicalCertificateDto){
+        
+        this.mcId = pMedicalCertificateDto.getID();
+        this.mcDescription = pMedicalCertificateDto.getDescription().get();
+        this.mcClientId = pMedicalCertificateDto.getClient().get();
+        this.mcDoctorId = pMedicalCertificateDto.getDoctor().get();
+    }
+    
+    public Integer getMcId() {
         return mcId;
     }
 
-    public void setMcId(BigDecimal mcId) {
+    public void setMcId(Integer mcId) {
         this.mcId = mcId;
     }
 
@@ -111,15 +111,12 @@ public class MedicalCertificate implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof MedicalCertificate)) {
             return false;
         }
         MedicalCertificate other = (MedicalCertificate) object;
-        if ((this.mcId == null && other.mcId != null) || (this.mcId != null && !this.mcId.equals(other.mcId))) {
-            return false;
-        }
-        return true;
+        return !((this.mcId == null && other.mcId != null) || (this.mcId != null && !this.mcId.equals(other.mcId)));
     }
 
     @Override

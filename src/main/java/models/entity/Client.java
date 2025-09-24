@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,11 +12,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import models.dto.ClientDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_CLIENT")
 @NamedQueries({
@@ -31,11 +23,11 @@ import javax.persistence.Table;
 public class Client implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     @Id
     @Basic(optional = false)
     @Column(name = "CL_ID")
-    private BigDecimal clId;
+    private Integer clId;
     @Basic(optional = false)
     @Column(name = "CL_NAME")
     private String clName;
@@ -49,20 +41,26 @@ public class Client implements Serializable {
     public Client() {
     }
 
-    public Client(BigDecimal clId) {
+    public Client(Integer clId) {
         this.clId = clId;
     }
 
-    public Client(BigDecimal clId, String clName) {
+    public Client(Integer clId, String clName) {
         this.clId = clId;
         this.clName = clName;
     }
 
-    public BigDecimal getClId() {
+    public Client (ClientDto pClientDto) {
+    
+        this.clId = pClientDto.getID();
+        this.clName = pClientDto.getName().get();
+    }
+    
+    public Integer getClId() {
         return clId;
     }
 
-    public void setClId(BigDecimal clId) {
+    public void setClId(Integer clId) {
         this.clId = clId;
     }
 
@@ -100,6 +98,7 @@ public class Client implements Serializable {
 
     @Override
     public int hashCode() {
+        
         int hash = 0;
         hash += (clId != null ? clId.hashCode() : 0);
         return hash;
@@ -107,15 +106,12 @@ public class Client implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+        
         if (!(object instanceof Client)) {
             return false;
         }
         Client other = (Client) object;
-        if ((this.clId == null && other.clId != null) || (this.clId != null && !this.clId.equals(other.clId))) {
-            return false;
-        }
-        return true;
+        return !((this.clId == null && other.clId != null) || (this.clId != null && !this.clId.equals(other.clId)));
     }
 
     @Override

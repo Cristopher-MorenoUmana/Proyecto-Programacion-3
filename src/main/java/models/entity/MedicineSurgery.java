@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,11 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import models.dto.MedicineSurgeryDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_MEDICINE_SURGERY")
 @NamedQueries({
@@ -29,11 +21,11 @@ import javax.persistence.Table;
 public class MedicineSurgery implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Id
     @Basic(optional = false)
     @Column(name = "MS_ID")
-    private BigDecimal msId;
+    private Integer msId;
     @JoinColumn(name = "MS_MEDICINE_ID", referencedColumnName = "ME_ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Medicine msMedicineId;
@@ -44,15 +36,21 @@ public class MedicineSurgery implements Serializable {
     public MedicineSurgery() {
     }
 
-    public MedicineSurgery(BigDecimal msId) {
+    public MedicineSurgery(Integer msId) {
         this.msId = msId;
     }
 
-    public BigDecimal getMsId() {
+    public Integer getMsId() {
         return msId;
     }
 
-    public void setMsId(BigDecimal msId) {
+    public MedicineSurgery(MedicineSurgeryDto pMedicineSurgeryDto) {
+        this.msId = pMedicineSurgeryDto.getID();
+        this.msMedicineId = pMedicineSurgeryDto.getMedicine().get();
+        this.msSurgeryId = pMedicineSurgeryDto.getSurgery().get();
+    }
+
+    public void setMsId(Integer msId) {
         this.msId = msId;
     }
 
@@ -81,15 +79,12 @@ public class MedicineSurgery implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+
         if (!(object instanceof MedicineSurgery)) {
             return false;
         }
         MedicineSurgery other = (MedicineSurgery) object;
-        if ((this.msId == null && other.msId != null) || (this.msId != null && !this.msId.equals(other.msId))) {
-            return false;
-        }
-        return true;
+        return !((this.msId == null && other.msId != null) || (this.msId != null && !this.msId.equals(other.msId)));
     }
 
     @Override

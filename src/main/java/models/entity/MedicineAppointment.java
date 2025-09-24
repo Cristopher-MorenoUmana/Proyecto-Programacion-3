@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,11 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import models.dto.MedicineAppointmentDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_MEDICINE_APPOINTMENT")
 @NamedQueries({
@@ -29,11 +21,11 @@ import javax.persistence.Table;
 public class MedicineAppointment implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Id
     @Basic(optional = false)
     @Column(name = "MA_ID")
-    private BigDecimal maId;
+    private Integer maId;
     @JoinColumn(name = "MA_APPOINTMENT_ID", referencedColumnName = "AP_ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Appointment maAppointmentId;
@@ -44,15 +36,22 @@ public class MedicineAppointment implements Serializable {
     public MedicineAppointment() {
     }
 
-    public MedicineAppointment(BigDecimal maId) {
+    public MedicineAppointment(Integer maId) {
         this.maId = maId;
     }
-
-    public BigDecimal getMaId() {
+    
+    public MedicineAppointment(MedicineAppointmentDto pMedicineAppointmentDto) {
+        
+        this.maId = pMedicineAppointmentDto.getID();
+        this.maAppointmentId = pMedicineAppointmentDto.getAppointment().get();
+        this.maMedicineId = pMedicineAppointmentDto.getMedicine().get();
+    }
+    
+    public Integer getMaId() {
         return maId;
     }
 
-    public void setMaId(BigDecimal maId) {
+    public void setMaId(Integer maId) {
         this.maId = maId;
     }
 
@@ -81,15 +80,12 @@ public class MedicineAppointment implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+
         if (!(object instanceof MedicineAppointment)) {
             return false;
         }
         MedicineAppointment other = (MedicineAppointment) object;
-        if ((this.maId == null && other.maId != null) || (this.maId != null && !this.maId.equals(other.maId))) {
-            return false;
-        }
-        return true;
+        return !((this.maId == null && other.maId != null) || (this.maId != null && !this.maId.equals(other.maId)));
     }
 
     @Override

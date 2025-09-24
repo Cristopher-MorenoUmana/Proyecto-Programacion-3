@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,11 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import models.dto.ReportAppointmentDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_REPORT_APPOINTMENT")
 @NamedQueries({
@@ -30,11 +22,11 @@ import javax.persistence.Table;
 public class ReportAppointment implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Id
     @Basic(optional = false)
     @Column(name = "RA_ID")
-    private BigDecimal raId;
+    private Integer raId;
     @Basic(optional = false)
     @Column(name = "RA_TYPE")
     private String raType;
@@ -48,20 +40,27 @@ public class ReportAppointment implements Serializable {
     public ReportAppointment() {
     }
 
-    public ReportAppointment(BigDecimal raId) {
+    public ReportAppointment(Integer raId) {
         this.raId = raId;
     }
 
-    public ReportAppointment(BigDecimal raId, String raType) {
+    public ReportAppointment(Integer raId, String raType) {
         this.raId = raId;
         this.raType = raType;
     }
 
-    public BigDecimal getRaId() {
+    public ReportAppointment(ReportAppointmentDto pReportAppointmentDto) {
+        
+        this.raId = pReportAppointmentDto.getID();
+        this.raType = pReportAppointmentDto.getType().get();
+        this.raReportId = pReportAppointmentDto.getReport().get();
+        this.raAppointmentId = pReportAppointmentDto.getAppointment().get();
+    }
+    public Integer getRaId() {
         return raId;
     }
 
-    public void setRaId(BigDecimal raId) {
+    public void setRaId(Integer raId) {
         this.raId = raId;
     }
 

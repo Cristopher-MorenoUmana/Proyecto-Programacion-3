@@ -1,13 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,30 +17,27 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import models.dto.AppointmentDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_APPOINTMENT")
 @NamedQueries({
     @NamedQuery(name = "Appointment.findAll", query = "SELECT a FROM Appointment a"),
     @NamedQuery(name = "Appointment.findByApId", query = "SELECT a FROM Appointment a WHERE a.apId = :apId"),
-    @NamedQuery(name = "Appointment.findByApDate", query = "SELECT a FROM Appointment a WHERE a.apDate = :apDate"),
+    @NamedQuery(name = "Appointment.findByApLocalDate", query = "SELECT a FROM Appointment a WHERE a.apDate = :apDate"),
     @NamedQuery(name = "Appointment.findByApState", query = "SELECT a FROM Appointment a WHERE a.apState = :apState")})
 public class Appointment implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+   
     @Id
     @Basic(optional = false)
     @Column(name = "AP_ID")
-    private BigDecimal apId;
+    private Integer apId;
     @Basic(optional = false)
     @Column(name = "AP_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date apDate;
+    private LocalDate apDate;
     @Basic(optional = false)
     @Column(name = "AP_STATE")
     private String apState;
@@ -67,29 +59,38 @@ public class Appointment implements Serializable {
     public Appointment() {
     }
 
-    public Appointment(BigDecimal apId) {
+    public Appointment(Integer apId) {
         this.apId = apId;
     }
 
-    public Appointment(BigDecimal apId, Date apDate, String apState) {
+    public Appointment(Integer apId, LocalDate apDate, String apState) {
         this.apId = apId;
         this.apDate = apDate;
         this.apState = apState;
     }
 
-    public BigDecimal getApId() {
+    public Appointment(AppointmentDto pAppointmentDto) {
+        
+        this.apId = pAppointmentDto.getID();
+        this.apClientId = pAppointmentDto.getClient().get();
+        this.apDoctorId = pAppointmentDto.getDoctor().get();
+        this.apDate = pAppointmentDto.getDate().get();
+        this.apState = pAppointmentDto.getState().get();
+    }
+    
+    public Integer getApId() {
         return apId;
     }
 
-    public void setApId(BigDecimal apId) {
+    public void setApId(Integer apId) {
         this.apId = apId;
     }
 
-    public Date getApDate() {
+    public LocalDate getApDate() {
         return apDate;
     }
 
-    public void setApDate(Date apDate) {
+    public void setApDate(LocalDate apDate) {
         this.apDate = apDate;
     }
 
@@ -158,15 +159,12 @@ public class Appointment implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+       
         if (!(object instanceof Appointment)) {
             return false;
         }
         Appointment other = (Appointment) object;
-        if ((this.apId == null && other.apId != null) || (this.apId != null && !this.apId.equals(other.apId))) {
-            return false;
-        }
-        return true;
+        return !((this.apId == null && other.apId != null) || (this.apId != null && !this.apId.equals(other.apId)));
     }
 
     @Override

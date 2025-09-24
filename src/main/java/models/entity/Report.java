@@ -1,13 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Date;
+import java.time.LocalDate;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,11 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import models.dto.ReportDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_REPORT")
 @NamedQueries({
@@ -36,15 +28,15 @@ import javax.persistence.TemporalType;
 public class Report implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Id
     @Basic(optional = false)
     @Column(name = "RE_ID")
-    private BigDecimal reId;
+    private Integer reId;
     @Basic(optional = false)
     @Column(name = "RE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date reDate;
+    private LocalDate reDate;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rmReportId", fetch = FetchType.EAGER)
     private Collection<ReportMedicalCertificate> reportMedicalCertificateCollection;
     @JoinColumn(name = "RE_CLIENT_ID", referencedColumnName = "CL_ID")
@@ -60,28 +52,35 @@ public class Report implements Serializable {
     public Report() {
     }
 
-    public Report(BigDecimal reId) {
+    public Report(Integer reId) {
         this.reId = reId;
     }
 
-    public Report(BigDecimal reId, Date reDate) {
+    public Report(Integer reId, LocalDate reDate) {
         this.reId = reId;
         this.reDate = reDate;
     }
 
-    public BigDecimal getReId() {
+    public Report(ReportDto pReportDto) {
+        
+        this.reClientId = pReportDto.getClient().get();
+        this.reId = pReportDto.getID();
+        this.reDate = pReportDto.getDate().get();
+    }
+    
+    public Integer getReId() {
         return reId;
     }
 
-    public void setReId(BigDecimal reId) {
+    public void setReId(Integer reId) {
         this.reId = reId;
     }
 
-    public Date getReDate() {
+    public LocalDate getReDate() {
         return reDate;
     }
 
-    public void setReDate(Date reDate) {
+    public void setReDate(LocalDate reDate) {
         this.reDate = reDate;
     }
 

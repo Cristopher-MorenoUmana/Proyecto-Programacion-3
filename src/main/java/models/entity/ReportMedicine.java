@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,11 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import models.dto.ReportMedicineDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_REPORT_MEDICINE")
 @NamedQueries({
@@ -29,11 +21,11 @@ import javax.persistence.Table;
 public class ReportMedicine implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Id
     @Basic(optional = false)
     @Column(name = "RME_ID")
-    private BigDecimal rmeId;
+    private Integer rmeId;
     @JoinColumn(name = "RME_MEDICINE_ID", referencedColumnName = "ME_ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Medicine rmeMedicineId;
@@ -44,16 +36,23 @@ public class ReportMedicine implements Serializable {
     public ReportMedicine() {
     }
 
-    public ReportMedicine(BigDecimal rmeId) {
+    public ReportMedicine(Integer rmeId) {
         this.rmeId = rmeId;
     }
 
-    public BigDecimal getRmeId() {
+    public Integer getRmeId() {
         return rmeId;
     }
 
-    public void setRmeId(BigDecimal rmeId) {
+    public void setRmeId(Integer rmeId) {
         this.rmeId = rmeId;
+    }
+   
+    public void setRmeId(ReportMedicineDto pReportMedicineDto) {
+        
+        this.rmeId = pReportMedicineDto.getID();
+        this.rmeReportId = pReportMedicineDto.getReport().get();
+        this.rmeMedicineId = pReportMedicineDto.getMedicine().get();
     }
 
     public Medicine getRmeMedicineId() {
@@ -81,15 +80,12 @@ public class ReportMedicine implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+
         if (!(object instanceof ReportMedicine)) {
             return false;
         }
         ReportMedicine other = (ReportMedicine) object;
-        if ((this.rmeId == null && other.rmeId != null) || (this.rmeId != null && !this.rmeId.equals(other.rmeId))) {
-            return false;
-        }
-        return true;
+        return !((this.rmeId == null && other.rmeId != null) || (this.rmeId != null && !this.rmeId.equals(other.rmeId)));
     }
 
     @Override

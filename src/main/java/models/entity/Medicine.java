@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -17,11 +12,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import models.dto.MedicineDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_MEDICINE")
 @NamedQueries({
@@ -32,11 +24,11 @@ import javax.persistence.Table;
 public class Medicine implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Id
     @Basic(optional = false)
     @Column(name = "ME_ID")
-    private BigDecimal meId;
+    private Integer meId;
     @Basic(optional = false)
     @Column(name = "ME_NAME")
     private String meName;
@@ -53,21 +45,27 @@ public class Medicine implements Serializable {
     public Medicine() {
     }
 
-    public Medicine(BigDecimal meId) {
+    public Medicine(Integer meId) {
         this.meId = meId;
     }
 
-    public Medicine(BigDecimal meId, String meName, String meDescription) {
+    public Medicine(Integer meId, String meName, String meDescription) {
         this.meId = meId;
         this.meName = meName;
         this.meDescription = meDescription;
     }
 
-    public BigDecimal getMeId() {
+    public Medicine(MedicineDto pMedicineDto) {
+     
+        this.meId = pMedicineDto.getID();
+        this.meName = pMedicineDto.getName().get();
+        this.meDescription = pMedicineDto.getDescription().get();
+    }
+    public Integer getMeId() {
         return meId;
     }
 
-    public void setMeId(BigDecimal meId) {
+    public void setMeId(Integer meId) {
         this.meId = meId;
     }
 

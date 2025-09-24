@@ -1,11 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package models.entity;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,11 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import models.dto.ReportSurgeryDto;
 
-/**
- *
- * @author neynm
- */
 @Entity
 @Table(name = "TBL_REPORT_SURGERY")
 @NamedQueries({
@@ -29,11 +21,11 @@ import javax.persistence.Table;
 public class ReportSurgery implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    
     @Id
     @Basic(optional = false)
     @Column(name = "RS_ID")
-    private BigDecimal rsId;
+    private Integer rsId;
     @JoinColumn(name = "RS_REPORT_ID", referencedColumnName = "RE_ID")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Report rsReportId;
@@ -44,15 +36,22 @@ public class ReportSurgery implements Serializable {
     public ReportSurgery() {
     }
 
-    public ReportSurgery(BigDecimal rsId) {
+    public ReportSurgery(ReportSurgeryDto pReportSurgery) {
+        
+        this.rsId = pReportSurgery.getID();
+        this.rsReportId = pReportSurgery.getReport().get();
+        this.rsSurgeryId = pReportSurgery.getSurgery().get();
+    }
+
+    public ReportSurgery(Integer rsId) {
         this.rsId = rsId;
     }
 
-    public BigDecimal getRsId() {
+    public Integer getRsId() {
         return rsId;
     }
 
-    public void setRsId(BigDecimal rsId) {
+    public void setRsId(Integer rsId) {
         this.rsId = rsId;
     }
 
@@ -81,15 +80,12 @@ public class ReportSurgery implements Serializable {
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
+
         if (!(object instanceof ReportSurgery)) {
             return false;
         }
         ReportSurgery other = (ReportSurgery) object;
-        if ((this.rsId == null && other.rsId != null) || (this.rsId != null && !this.rsId.equals(other.rsId))) {
-            return false;
-        }
-        return true;
+        return !((this.rsId == null && other.rsId != null) || (this.rsId != null && !this.rsId.equals(other.rsId)));
     }
 
     @Override
